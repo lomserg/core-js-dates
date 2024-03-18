@@ -229,24 +229,8 @@ function getWeekNumberByDate(/* date */) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(date) {
-  const currentDate = new Date(date);
-
-  currentDate.setDate(13);
-
-  if (currentDate.getDay() === 5) {
-    return currentDate;
-  }
-
-  while (true) {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-
-    currentDate.setDate(13);
-
-    if (currentDate.getDay() === 5) {
-      return currentDate;
-    }
-  }
+function getNextFridayThe13th(/* date */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -260,10 +244,10 @@ function getNextFridayThe13th(date) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const month = date.getMonth() + 1;
+  return Math.ceil(month / 3);
 }
-
 /**
  * Generates an employee's work schedule within a specified date range, based on a pattern of working and off days.
  * The start and end dates of the period are inclusive.
@@ -298,8 +282,9 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
 module.exports = {
