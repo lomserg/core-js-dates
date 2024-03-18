@@ -121,8 +121,17 @@ function getCountDaysInMonth(/* month, year */) {
  * '2024-02-01T00:00:00.000Z', '2024-02-02T00:00:00.000Z'  => 2
  * '2024-02-01T00:00:00.000Z', '2024-02-12T00:00:00.000Z'  => 12
  */
-function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
-  throw new Error('Not implemented');
+function getCountDaysOnPeriod(dateStart, dateEnd) {
+  const start = new Date(dateStart);
+  const end = new Date(dateEnd);
+
+  const differenceInMilliseconds = end - start;
+
+  const differenceInDays = Math.ceil(
+    differenceInMilliseconds / (1000 * 60 * 60 * 24)
+  );
+
+  return differenceInDays + 1;
 }
 
 /**
@@ -142,10 +151,13 @@ function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
  * '2024-02-02', { start: '2024-02-02', end: '2024-03-02' } => true
  * '2024-02-10', { start: '2024-02-02', end: '2024-03-02' } => true
  */
-function isDateInPeriod(/* date, period */) {
-  throw new Error('Not implemented');
-}
+function isDateInPeriod(date, period) {
+  const dateToCheck = new Date(date);
+  const periodStart = new Date(period.start);
+  const periodEnd = new Date(period.end);
 
+  return dateToCheck >= periodStart && dateToCheck <= periodEnd;
+}
 /**
  * Returns the date formatted in 'M/D/YYYY, hh:mm:ss a'.
  *
@@ -173,8 +185,20 @@ function formatDate(/* date */) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  let weekendCount = 0;
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const currentDate = new Date(year, month - 1, day);
+
+    if (currentDate.getDay() === 6 || currentDate.getDay() === 0) {
+      weekendCount += 1;
+    }
+  }
+
+  return weekendCount;
 }
 
 /**
@@ -205,8 +229,24 @@ function getWeekNumberByDate(/* date */) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(/* date */) {
-  throw new Error('Not implemented');
+function getNextFridayThe13th(date) {
+  const currentDate = new Date(date);
+
+  currentDate.setDate(13);
+
+  if (currentDate.getDay() === 5) {
+    return currentDate;
+  }
+
+  while (true) {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+
+    currentDate.setDate(13);
+
+    if (currentDate.getDay() === 5) {
+      return currentDate;
+    }
+  }
 }
 
 /**
